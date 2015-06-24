@@ -161,6 +161,14 @@ public func constrain(views: [View], replace group: ConstraintGroup = Constraint
     return group
 }
 
+public func constrain(views: [View], parent: View, replace group: ConstraintGroup = ConstraintGroup(), @noescape block: ([LayoutProxy], LayoutProxy) -> ()) -> ConstraintGroup {
+	let context = Context()
+	block(views.map({ LayoutProxy(context, $0) }), LayoutProxy(context, parent))
+	group.replaceConstraints(context.constraints, performLayout: false)
+	
+	return group
+}
+
 /// Updates the constraints of a dictionary of views.
 ///
 /// :param: views   The views to layout.
