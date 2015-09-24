@@ -75,7 +75,7 @@ public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, 
 		constraints.append(views.last!.trailing == parent.trailing - amount)
 	}
 	
-	return constraints + reduce(views.first!, Array(views[1..<views.count])) { $0.trailing == $1.leading - amount }
+	return constraints + reduce(views.first!, rest: Array(views[1..<views.count])) { $0.trailing == $1.leading - amount }
 }
 
 public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, leftToRight views: [LayoutProxy]) -> [NSLayoutConstraint] {
@@ -86,7 +86,7 @@ public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, 
 		constraints.append(views.last!.right == parent.right - amount)
 	}
 	
-	return constraints + reduce(views.first!, Array(views[1..<views.count])) { $0.trailing == $1.leading - amount }
+	return constraints + reduce(views.first!, rest: Array(views[1..<views.count])) { $0.trailing == $1.leading - amount }
 }
 
 public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, vertically views: [LayoutProxy]) -> [NSLayoutConstraint] {
@@ -97,5 +97,5 @@ public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, 
 		constraints.append(views.last!.right == parent.right - amount)
 	}
 	
-	return constraints + reduce(views.first!, Array(views[1..<views.count])) { $0.bottom == $1.top - amount }
+	return constraints + reduce(views.first!, rest: Array(views[1..<views.count])) { $0.bottom == $1.top - amount }
 }
