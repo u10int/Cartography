@@ -34,7 +34,7 @@ private func reduce(first: LayoutProxy, rest: [LayoutProxy], combine: (LayoutPro
 ///
 /// - returns: An array of `NSLayoutConstraint` instances.
 ///
-public func distribute(by amount: CGFloat, horizontally first: LayoutProxy, rest: LayoutProxy...) -> [NSLayoutConstraint] {
+public func distribute(by amount: CGFloat, horizontally first: LayoutProxy, _ rest: LayoutProxy...) -> [NSLayoutConstraint] {
 	return distribute(by: amount, horizontally: [first] + rest)
 }
 
@@ -48,7 +48,7 @@ public func distribute(by amount: CGFloat, horizontally first: LayoutProxy, rest
 ///
 /// - returns: An array of `NSLayoutConstraint` instances.
 ///
-public func distribute(by amount: CGFloat, leftToRight first: LayoutProxy, rest: LayoutProxy...) -> [NSLayoutConstraint] {
+public func distribute(by amount: CGFloat, leftToRight first: LayoutProxy, _ rest: LayoutProxy...) -> [NSLayoutConstraint] {
 	return distribute(by: amount, leftToRight: [first] + rest)
 }
 
