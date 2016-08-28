@@ -66,36 +66,8 @@ public func distribute(by amount: CGFloat, vertically first: LayoutProxy, _ rest
 	return distribute(by: amount, vertically: [first] + rest)
 }
 
-
-public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, horizontally views: [LayoutProxy]) -> [NSLayoutConstraint] {
-	var constraints: [NSLayoutConstraint] = []
-	
-	if let parent = parent {
-		constraints.append(views.first!.leading == parent.leading + amount)
-		constraints.append(views.last!.trailing == parent.trailing - amount)
-	}
-	
-	return constraints + reduce(views.first!, rest: Array(views[1..<views.count])) { $0.trailing == $1.leading - amount }
-}
-
-public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, leftToRight views: [LayoutProxy]) -> [NSLayoutConstraint] {
-	var constraints: [NSLayoutConstraint] = []
-	
-	if let parent = parent {
-		constraints.append(views.first!.left == parent.left + amount)
-		constraints.append(views.last!.right == parent.right - amount)
-	}
-	
-	return constraints + reduce(views.first!, rest: Array(views[1..<views.count])) { $0.trailing == $1.leading - amount }
-}
-
-public func distribute(by amount: CGFloat, inside parent: LayoutProxy? = .None, vertically views: [LayoutProxy]) -> [NSLayoutConstraint] {
-	var constraints: [NSLayoutConstraint] = []
-	
-	if let parent = parent {
-		constraints.append(views.first!.left == parent.left + amount)
-		constraints.append(views.last!.right == parent.right - amount)
-	}
-	
-	return constraints + reduce(views.first!, rest: Array(views[1..<views.count])) { $0.bottom == $1.top - amount }
+/// Adds support for passing an array of views to distribute
+/// https://github.com/robb/Cartography/issues/193
+public func distribute(by amount: CGFloat, horizontally array: [LayoutProxy]) -> [NSLayoutConstraint] {
+	return reduce(array.first!, rest: Array(array.dropFirst())) { $0.trailing == $1.leading - amount }
 }
