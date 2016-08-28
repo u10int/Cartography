@@ -15,13 +15,13 @@
 typealias Accumulator = ([NSLayoutConstraint], LayoutProxy)
 
 private func reduce(first: LayoutProxy, rest: [LayoutProxy], combine: (LayoutProxy, LayoutProxy) -> NSLayoutConstraint) -> [NSLayoutConstraint] {
-    rest.last?.view.car_translatesAutoresizingMaskIntoConstraints = false
-
-    return rest.reduce(([], first)) { (acc, current) -> Accumulator in
-        let (constraints, previous) = acc
-
-        return (constraints + [ combine(previous, current) ], current)
-    }.0
+	rest.last?.view.car_translatesAutoresizingMaskIntoConstraints = false
+	
+	return rest.reduce(([], first)) { (acc, current) -> Accumulator in
+		let (constraints, previous) = acc
+		
+		return (constraints + [ combine(previous, current) ], current)
+		}.0
 }
 
 /// Distributes multiple views horizontally.
@@ -34,8 +34,8 @@ private func reduce(first: LayoutProxy, rest: [LayoutProxy], combine: (LayoutPro
 ///
 /// - returns: An array of `NSLayoutConstraint` instances.
 ///
-public func distribute(by amount: CGFloat, horizontally first: LayoutProxy, rest: LayoutProxy...) -> [NSLayoutConstraint] {
-	return distribute(by: amount, horizontally: [first] + rest)
+public func distribute(by amount: CGFloat, horizontally first: LayoutProxy, _ rest: LayoutProxy...) -> [NSLayoutConstraint] {
+	return reduce(first, rest: rest) { $0.trailing == $1.leading - amount }
 }
 
 /// Distributes multiple views horizontally from left to right.
@@ -48,8 +48,8 @@ public func distribute(by amount: CGFloat, horizontally first: LayoutProxy, rest
 ///
 /// - returns: An array of `NSLayoutConstraint` instances.
 ///
-public func distribute(by amount: CGFloat, leftToRight first: LayoutProxy, rest: LayoutProxy...) -> [NSLayoutConstraint] {
-	return distribute(by: amount, leftToRight: [first] + rest)
+public func distribute(by amount: CGFloat, leftToRight first: LayoutProxy, _ rest: LayoutProxy...) -> [NSLayoutConstraint] {
+	return reduce(first, rest: rest) { $0.right == $1.left - amount  }
 }
 
 /// Distributes multiple views vertically.
@@ -63,7 +63,7 @@ public func distribute(by amount: CGFloat, leftToRight first: LayoutProxy, rest:
 /// - returns: An array of `NSLayoutConstraint` instances.
 ///
 public func distribute(by amount: CGFloat, vertically first: LayoutProxy, _ rest: LayoutProxy...) -> [NSLayoutConstraint] {
-	return distribute(by: amount, vertically: [first] + rest)
+	return reduce(first, rest: rest) { $0.bottom == $1.top - amount }
 }
 
 /// Adds support for passing an array of views to distribute
